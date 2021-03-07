@@ -1,0 +1,105 @@
+﻿@model AuroraProject.Core.ViewModels.WalletViewModel
+
+@{
+    ViewBag.Title = @Model.PageName;
+}
+
+<div class="container-fluid register">
+    <h6 class="navigator-h6-b">@Html.ActionLink("Aurora", "Index", "Home") > <a href="" onClick="window.location.reload();"> @Html.ActionLink(Model.UserFullName, "Details", "Influencer")</a>><a href="" onClick="window.location.reload();"> @Model.PageName</a></h6>
+
+    <div class="page-decoration-b container">
+        <h1 class="page-heading-b">@Model.PageName</h1>
+        <p class="page-descreption-b">Having Money makes Sence, and Sence Makes you Money!</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 register-left">
+            <img src="~/Content/Images/Login/Money.png" alt="Creative Logo" />
+            <h3>Tips:</h3>
+            <p>Remember: Money don't bring Happiness<br />But, Money can Buy you a Nice House, a Fast Car and Delicious Food!<p>
+                @*<input type="submit" name="" value="Login" /><br />*@
+        </div>
+
+        <div class="wallet-container-a text-center">
+            <p class="page-title">
+                <i class="fa fa-align-left"></i>
+                E-Wallet
+                <i class="fa fa-user">
+                    @Html.ActionLink(Model.UserFullName, "Details", "Influencer")
+                </i>
+            </p>
+
+            <div class="amount-box text-center">
+                <img src="~/Content/Images/Images/wallet.png">
+                <p>Total Balance</p>
+                <p class="amount">$ @Model.Value.ToString(".00")</p>
+            </div>
+
+            @using (Html.BeginForm("Update", "Wallet", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="btn-group text-center">
+                    <button type="submit" name="submitButton" value="AddMoney" class="btn btn-outline-light">Add Money</button>
+                    <button type="submit" name="submitButton" value="WithdrawMoney" class="btn btn-outline-light">Withdraw</button>
+                </div>
+
+                <div class="money-ammount-text">
+                    @Html.TextBoxFor(m => m.Transaction, new { placeholder = "Enter an Amount", @type = "number", @class = "input-money-ammount", @min = "0", @max = "10000", @Value = " " })
+                    @Html.ValidationMessageFor(m => m.Transaction, "", new { @class = "error-register" })
+                </div>
+            }
+
+            <p class="history-card-txt"><b>History</b></p>
+            <hr />
+            <div class="txn-history">
+                @if (Model.UserNotifications.Count() != 0)
+                {
+                    foreach (var notification in Model.UserNotifications.Reverse())
+                    {
+                        <p class="txn-list txn-list-purchase @(notification.Notification.Type != NotificationType.PurchaseGig && notification.Notification.Type != NotificationType.WithdrawMoney? "txn-list-purchase" : "txn-list-sell")">
+                            @notification.Notification.Message
+
+                            <span class="credit-amount @(notification.IsRead ? "d-none": "")">
+                                New
+                            </span>
+
+                            <button class="btn js-delete-notification delete-notification notification-span" data-notification-id="@notification.NotificationId">
+                                Delete
+                            </button>
+
+                            <button class="btn js-read-notification read-notificaction notification-span @(notification.IsRead ? "d-none": "")" data-notification-id="@notification.NotificationId">
+                                Read
+                            </button>
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="txn-list txn-list-purchase">
+                        No notifications
+                    </p>
+                }
+
+
+            </div>
+            <div class="footer-menu">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+            // GET NOTIFICATIONS
+            NotificationController.getNotifications();
+            // READ NOTIFICATION JS
+            NotificationController.readNotifications();
+            // DELETE NOTIFICATIONS
+            NotificationController.deleteNotification();
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

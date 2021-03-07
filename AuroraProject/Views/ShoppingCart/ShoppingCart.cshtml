@@ -1,0 +1,200 @@
+﻿@model AuroraProject.Core.ViewModels.ShoppingCartViewModel
+@{
+    ViewBag.Title = "ShoppingCart";
+}
+
+<div class="container-fluid register">
+    <h6 class="navigator-h6-b">@Html.ActionLink("Aurora", "Index", "Home") > <a href="" onClick="window.location.reload();"> @Html.ActionLink(Model.ShoppingCart.Owner.UserFullName, "Details", "Influencer")</a>><a href="" onClick="window.location.reload();"> Wallet</a></h6>
+
+    <div class="page-decoration-b container">
+        <h1 class="page-heading-b">@Model.ShoppingCart.Owner.UserFullName Wallet</h1>
+        <p class="page-descreption-b">We Hope that you found what you were looking for!</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="~/Content/Images/Images/shoppingCart.png" alt="Creative Logo" />
+            <h3>Tips:</h3>
+            <p>Make sure that you are buying exactly what you need. <br /> <br /> After your purchase, a notification will be sent to your Wallet, and you will be able to check in History all your purchases!<p>
+                @*<input type="submit" name="" value="Login" /><br />*@
+        </div>
+
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Shopping Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="payed-tab" data-toggle="tab" href="#payed" role="tab" aria-controls="payed" aria-selected="false">Shopping History</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row shoppingCart-form">
+                        <div class="col-md-12">
+
+                            <!-- Shopping cart table -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="p-2 px-3 text-uppercase">Product</div>
+                                            </th>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="py-2 text-uppercase">Price</div>
+                                            </th>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="py-2 text-uppercase">Quantity</div>
+                                            </th>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="py-2 text-uppercase">Remove</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var order in Model.Orders)
+                                        {
+                                            if (!order.IsPayed)
+                                            {
+                                                <tr class="purchase-forms">
+                                                    <th scope="row" class="border-0">
+                                                        <div class="p-2">
+
+                                                            @if (order.Gig.FileUploads.Any(f => f.FileType == AuroraProject.Core.Models.FileType.Photo))
+                                                            {
+
+                                                                <img alt="" width="70" class="img-fluid rounded shadow-sm" src="~/File?id=@order.Gig.FileUploads.First(f => f.FileType == AuroraProject.Core.Models.FileType.Photo).ID">
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <img src="http://propeller.in/assets/images/profile-pic.png" alt="" width="70" class="img-fluid rounded shadow-sm">
+                                                            }
+
+                                                            <div class="ml-3 d-inline-block align-middle">
+                                                                <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">@order.Name</a></h5><span class="text-muted font-weight-normal font-italic d-block">@order.Descreption</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td class="border-0 align-middle"><strong>@order.Price$</strong></td>
+                                                    <td class="border-0 align-middle"><strong>@order.Count</strong></td>
+                                                    <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash" data-order-id="@order.ID"></i></a></td>
+                                                    <td class="border-0 align-middle">
+                                                        @if (order.Name == order.Gig.BasicPackage.PackageName && order.Descreption == order.Gig.BasicPackage.PackageDescreption)
+                                                        {
+                                                            <form id="purchace-gig-basic">
+                                                                <button id="basic" class="text-light checkout-button btn-success btn shadow-none js-button-click" data-sellingPackage-id="@order.Gig.BasicPackageID" data-gig-id="@order.Gig.ID" data-order-id="@order.ID" data-sellingPackage-name="@order.Gig.BasicPackage.PackageName">
+                                                                    CheckOut
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        else if (order.Name == order.Gig.AdvancedPackage.PackageName && order.Descreption == order.Gig.AdvancedPackage.PackageDescreption)
+                                                        {
+                                                            <form id="purchace-gig-advanced">
+                                                                <button id="advanced" class="text-light checkout-button btn-success btn shadow-none js-button-click" data-sellingPackage-id="@order.Gig.AdvancedPackageID" data-gig-id="@order.Gig.ID" data-order-id="@order.ID" data-sellingPackage-name="@order.Gig.AdvancedPackage.PackageName">
+                                                                    CheckOut
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        else if (order.Name == order.Gig.PremiumPackage.PackageName && order.Descreption == order.Gig.PremiumPackage.PackageDescreption)
+                                                        {
+                                                            <form id="purchace-gig-premium">
+                                                                <button id="premium" class="text-light checkout-button btn-success btn shadow-none js-button-click" data-sellingPackage-id="@order.Gig.PremiumPackageID" data-gig-id="@order.Gig.ID" data-order-id="@order.ID" data-sellingPackage-name="@order.Gig.PremiumPackage.PackageName">
+                                                                    CheckOut
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a href="#" class="text-dark">No Option for Purchase</a>
+                                                        }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade show" id="payed" role="tabpanel" aria-labelledby="payed-tab">
+                    <div class="row shoppingCart-form">
+                        <div class="col-md-12">
+
+                            <!-- Shopping cart table -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="p-2 px-3 text-uppercase">Product</div>
+                                            </th>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="py-2 text-uppercase">Price</div>
+                                            </th>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="py-2 text-uppercase">Quantity</div>
+                                            </th>
+                                            <th scope="col" class="border-0 bg-light">
+                                                <div class="py-2 text-uppercase">Remove</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var order in Model.Orders)
+                                        {
+                                            if (order.IsPayed)
+                                            {
+                                                <tr class="purchase-forms">
+                                                    <th scope="row" class="border-0">
+                                                        <div class="p-2">
+
+                                                            @if (order.Gig.FileUploads.Any(f => f.FileType == AuroraProject.Core.Models.FileType.Photo))
+                                                            {
+
+                                                                <img alt="" width="70" class="img-fluid rounded shadow-sm" src="~/File?id=@order.Gig.FileUploads.First(f => f.FileType == AuroraProject.Core.Models.FileType.Photo).ID">
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <img src="http://propeller.in/assets/images/profile-pic.png" alt="" width="70" class="img-fluid rounded shadow-sm">
+                                                            }
+
+                                                            <div class="ml-3 d-inline-block align-middle">
+                                                                <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">@order.Name</a></h5><span class="text-muted font-weight-normal font-italic d-block">@order.Descreption</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td class="border-0 align-middle"><strong>@order.Price$</strong></td>
+                                                    <td class="border-0 align-middle"><strong>@order.Count</strong></td>
+                                                    <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash" data-order-id="@order.ID"></i></a></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //PURCHASE PACKAGE
+            PurchaseController.initial(".purchase-forms");
+            //ORDERS REMOVAL
+            OrderController.deleteOrder();
+
+        });
+    </script>
+}

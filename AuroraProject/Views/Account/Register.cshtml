@@ -1,0 +1,78 @@
+﻿@model AuroraProject.Core.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="container-fluid register">
+    <h6 class="navigator-h6-b">@Html.ActionLink("Aurora", "Index", "Home") > <a href="" onClick="window.location.reload();">Register to Aurora</a></h6>
+
+    <div class="page-decoration-b container">
+        <h1 class="page-heading-b">Register</h1>
+        <p class="page-descreption-b">Welcome Traveller, may our Hub Serve you Well!</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="~/Content/Images/Logo/aurora_logoFINAL-05.png" alt="Aurora Logo" style="width:40%"/>
+            <h3>Tips:</h3>
+            <p>Aurora is the best place for: <br /> <br /> Reaching your Audience, <br /> Creating Marketing Campaings,  <br /> Message Personalization and  <br /> Product Placement!<p>
+                @*<input type="submit" name="" value="Login" /><br />*@
+        </div>
+
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Register to Aurora</a>
+                </li>
+                <hr />
+            </ul>
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "newUser" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row register-form">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Email, new { @type = "email", @class = "form-control", @placeholder = "Email *" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "error-register" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Password, new { @type = "password", @class = "form-control", @placeholder = "Password *" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error-register" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @type = "password", @class = "form-control", @placeholder = "ConfirmPassword *" })
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "error-register" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @type = "text", @class = "form-control", @placeholder = "First Name *" })
+                                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "error-register" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.LastName, new { @type = "text", @class = "form-control", @placeholder = "Last Name *" })
+                                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "error-register" })
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-group-lg btn-submit-form animated fadeIn shadow-none" value="Save" name="actionButton">Register</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            FormInputCheckController.initial();
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

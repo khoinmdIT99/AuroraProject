@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://fonts.googleapis.com/css?family=Sen&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @*@Mvc.RazorTools.BundleManager.Styles.Render()*@
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    @{Html.RenderAction("Search", "SpecificIndustry");}
+
+    <div class="alt-layout-navbar">
+        @Html.Partial("_mainNavBar")
+    </div>
+
+    @RenderBody()
+
+    <div class="alt-layout-navbar">
+        @Html.Partial("_Footer")
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/app")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+
+            //SEARCH BOX FUNCTIONS
+            SearchController.initial();
+
+            //NOTIFICATIONS AT NAV BAR LOGIN
+            NotificationController.getNotifications();
+
+            //ORDERS AT NAV BAR LOGIN
+            OrderController.getOrders();
+
+            //ON HOVER INDUSTRY DROP DOWN
+            HoverIndustryController.initial("#navbarNav-Industry");
+
+            //ARROWS FUNCTION FOR HOME
+            HtmlTabController.homeIndex();
+        });
+    </script>
+
+</body>
+</html>

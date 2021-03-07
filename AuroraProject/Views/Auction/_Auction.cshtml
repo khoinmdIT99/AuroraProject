@@ -1,0 +1,37 @@
+﻿@model AuroraProject.Core.ViewModels.AuctionFormViewModel
+
+@using (Html.BeginForm("Create", "Auction", null, FormMethod.Post, new { @class = "auction-form-profile" }))
+{
+    foreach (var auction in Model.Auctions)
+    {
+        <hr />
+        <tr>
+            <th scope="row" class="border-0">
+                <div class="p-2">
+
+                    @if (auction.Gig.FileUploads.Any(f => f.FileType == AuroraProject.Core.Models.FileType.Photo))
+                    {
+                        <img alt="" width="70" class="img-fluid rounded shadow-sm" src="~/File?id=@auction.Gig.FileUploads.First(f => f.FileType == AuroraProject.Core.Models.FileType.Photo).ID">
+                    }
+                    else
+                    {
+                        <img src="http://propeller.in/assets/images/profile-pic.png" alt="" width="70" class="img-fluid rounded shadow-sm">
+                    }
+
+                    <div class="ml-3 d-inline-block text-lg-left text-sm-left">
+                        <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block">@auction.Gig.GigName</a></h5><span class="text-muted font-weight-normal font-italic d-block">@auction.Gig.Descreption</span>
+                    </div>
+                </div>
+            </th>
+            <td class="border-0 align-middle"><strong>Last Bet: @auction.Bet $</strong></td>
+            <br />
+            <td class="border-0 align-middle"><strong>Position: @auction.PositionOnMarket</strong></td>
+        </tr>
+    }
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
